@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loader - ReX 1.0</title>
+    <style>
+        @import "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&amp;display=swap";
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: opacity .8s;
+            z-index: 9500;
+        }
+        #title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+        .text-outline {
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        #barWrap {
+            width: 280px;
+            height: 8px;
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+        #bar {
+            height: 100%;
+            width: 0%;
+            background: #ff0000;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+            transition: width 0.3s ease-out;
+        }
+        #followGif {
+            position: absolute;
+            bottom: 12px;
+            left: 0%;
+            width: 25px;
+            height: 25px;
+            transform: translateX(-50%);
+            transition: left 0.3s ease-out;
+            pointer-events: none;
+        }
+        #loadTxt {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 10px;
+            font-size: 12px;
+            font-weight: 400;
+            color: #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="loader">
+        <div id="title" class="text-outline">ReX 1.0</div>
+        <div id="barWrap">
+            <img id="followGif" src="https://i.ibb.co/TB14zM64/altkisim.png" alt="loading">
+            <div id="bar"></div>
+        </div>
+        <div id="loadTxt" class="text-outline">Loading... 0%</div>
+    </div>
+    <script>
+        const bar = document.getElementById('bar');
+        const loadTxt = document.getElementById('loadTxt');
+        const followGif = document.getElementById('followGif');
+        let p = 0;
+        const interval = setInterval(() => {
+            p += Math.random() * 15 + 5;
+            if (p >= 100) {
+                p = 100;
+                clearInterval(interval);
+            }
+            bar.style.width = p + '%';
+            followGif.style.left = p + '%';
+            loadTxt.textContent = 'Loading... ' + Math.round(p) + '%';
+        }, 200);
+    </script>
+</body>
+</html>
