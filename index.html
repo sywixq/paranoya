@@ -43,7 +43,7 @@
             text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
         }
         #barWrap {
-            width: 280px; height: 8px; background: rgba(30,30,30,0.9);
+            width: 280px; height: 16px; background: rgba(30,30,30,0.9);
             border-radius: 10px; border: 1px solid rgba(0,0,0,0.4); position: relative;
         }
         #bar {
@@ -51,9 +51,13 @@
             box-shadow: 0 0 15px rgba(255,0,0,0.6); transition: width 0.3s ease-out;
         }
         #followGif {
-            position: absolute; bottom: 12px; left: 0%;
+            position: absolute; bottom: 16px; left: 0%;
             width: 25px; height: 25px; filter: brightness(0) invert(1);
             transform: translateX(-50%); transition: left 0.3s ease-out; pointer-events: none;
+        }
+        #percentTxt {
+            font-family: "Rajdhani", sans-serif; font-weight: 700;
+            margin-bottom: 8px; font-size: 13px; letter-spacing: 2px; color: #eee;
         }
         #loadTxt {
             font-family: "Rajdhani", sans-serif; font-weight: 700;
@@ -72,17 +76,19 @@
         <div id="loaderContent">
             <img id="animeGirl" src="https://files.catbox.moe/398tuq.png" alt="anime girl">
             <div id="title" class="text-outline">Rex.wtf v1.0</div>
+            <div id="percentTxt" class="text-outline">0%</div>
             <div id="barWrap">
                 <img id="followGif" src="https://files.catbox.moe/y50jx0.png" alt="loading">
                 <div id="bar"></div>
             </div>
-            <div id="loadTxt" class="text-outline">Loading... 0%</div>
+            <div id="loadTxt" class="text-outline">Loading...</div>
             <div id="discordTxt" class="text-outline">discord.gg/rexlua</div>
         </div>
     </div>
     <script>
         const bar = document.getElementById('bar');
         const loadTxt = document.getElementById('loadTxt');
+        const percentTxt = document.getElementById('percentTxt');
         const discordTxt = document.getElementById('discordTxt');
         const loader = document.getElementById('loader');
         const followGif = document.getElementById('followGif');
@@ -154,15 +160,17 @@
             p += Math.random() * 15 + 5;
             if (p >= 100) {
                 p = 100;
+                loadTxt.textContent = 'Successfully Injected';
                 clearInterval(interval);
                 setTimeout(() => {
                     loader.classList.add('fade-out');
                     setTimeout(() => { loader.style.display = 'none'; clearInterval(textInterval); }, 2000);
-                }, 300);
+                }, 900);
             }
             bar.style.width = p + '%';
             followGif.style.left = p + '%';
-            loadTxt.textContent = 'Loading... ' + Math.round(p) + '%';
+            percentTxt.textContent = Math.round(p) + '%';
+            if (p < 100) loadTxt.textContent = 'Loading...';
         }, 200);
     </script>
 </body>
