@@ -4,94 +4,161 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Loader - ReX 1.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        @import "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&amp;display=swap";
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body {
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
+        html, body { width: 100%; height: 100vh; overflow: hidden; }
+        #snowCanvas {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
         }
         #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            transition: opacity .8s;
-            z-index: 9500;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; transition: opacity 2s ease; z-index: 9500; overflow: hidden;
+        }
+        #loader.fade-out { opacity: 0; pointer-events: none; }
+        #loaderContent {
+            position: relative; z-index: 2;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        #animeGirl {
+            position: absolute; left: 50%; top: -120px;
+            width: 190px; height: auto; pointer-events: none;
+            animation: riseUp 1.2s ease-out both;
+        }
+        @keyframes riseUp {
+            0%   { transform: translate(-50%, 70px); opacity: 0; }
+            100% { transform: translate(-50%, 0);    opacity: 1; }
         }
         #title {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            font-size: 16px;
-            letter-spacing: 1px;
-            margin-bottom: 25px;
-            color: #fff;
+            font-family: "Cinzel Decorative", cursive;
+            font-weight: 700; font-size: 20px; letter-spacing: 3px;
+            margin-bottom: 25px; color: #fff;
         }
         .text-outline {
-            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0px 2px 4px rgba(0, 0, 0, 0.8);
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
         }
         #barWrap {
-            width: 280px;
-            height: 8px;
-            background: rgba(30, 30, 30, 0.9);
-            border-radius: 10px;
-            border: 1px solid rgba(0, 0, 0, 0.4);
-            position: relative;
+            width: 280px; height: 8px; background: rgba(30,30,30,0.9);
+            border-radius: 10px; border: 1px solid rgba(0,0,0,0.4); position: relative;
         }
         #bar {
-            height: 100%;
-            width: 0%;
-            background: #ff0000;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-            transition: width 0.3s ease-out;
+            height: 100%; width: 0%; background: #ff0000; border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255,0,0,0.6); transition: width 0.3s ease-out;
         }
         #followGif {
-            position: absolute;
-            bottom: 12px;
-            left: 0%;
-            width: 25px;
-            height: 25px;
-            transform: translateX(-50%);
-            transition: left 0.3s ease-out;
-            pointer-events: none;
+            position: absolute; bottom: 12px; left: 0%;
+            width: 25px; height: 25px; filter: brightness(0) invert(1);
+            transform: translateX(-50%); transition: left 0.3s ease-out; pointer-events: none;
         }
         #loadTxt {
-            font-family: 'Montserrat', sans-serif;
-            margin-top: 10px;
-            font-size: 12px;
-            font-weight: 400;
-            color: #eee;
+            font-family: "Rajdhani", sans-serif; font-weight: 700;
+            margin-top: 10px; font-size: 13px; letter-spacing: 2px;
+            text-transform: uppercase; color: #eee;
+        }
+        #discordTxt {
+            font-family: "Rajdhani", sans-serif; font-weight: 700;
+            margin-top: 60px; font-size: 13px; letter-spacing: 2px; color: #eee;
         }
     </style>
 </head>
 <body>
     <div id="loader">
-        <div id="title" class="text-outline">ReX 1.0</div>
-        <div id="barWrap">
-            <img id="followGif" src="https://i.ibb.co/TB14zM64/altkisim.png" alt="loading">
-            <div id="bar"></div>
+        <canvas id="snowCanvas"></canvas>
+        <div id="loaderContent">
+            <img id="animeGirl" src="https://files.catbox.moe/398tuq.png" alt="anime girl">
+            <div id="title" class="text-outline">Rex.wtf v1.0</div>
+            <div id="barWrap">
+                <img id="followGif" src="https://files.catbox.moe/y50jx0.png" alt="loading">
+                <div id="bar"></div>
+            </div>
+            <div id="loadTxt" class="text-outline">Loading... 0%</div>
+            <div id="discordTxt" class="text-outline">discord.gg/rexlua</div>
         </div>
-        <div id="loadTxt" class="text-outline">Loading... 0%</div>
     </div>
     <script>
         const bar = document.getElementById('bar');
         const loadTxt = document.getElementById('loadTxt');
+        const discordTxt = document.getElementById('discordTxt');
+        const loader = document.getElementById('loader');
         const followGif = document.getElementById('followGif');
+        const snowCanvas = document.getElementById('snowCanvas');
+        const snowCtx = snowCanvas.getContext('2d');
+
+        const rexSprite = new Image();
+        rexSprite.src = 'https://i.ibb.co/v6zx1kyM/rex.png';
+
+        let flakes = [];
+
+        function resizeSnowCanvas() {
+            snowCanvas.width = window.innerWidth;
+            snowCanvas.height = window.innerHeight;
+            const flakeCount = Math.max(40, Math.floor((window.innerWidth * window.innerHeight) / 18000));
+            flakes = Array.from({ length: flakeCount }, () => ({
+                x: Math.random() * snowCanvas.width,
+                y: Math.random() * snowCanvas.height,
+                size: Math.random() * 28 + 18,
+                vy: Math.random() * 1.4 + 0.6,
+                vx: Math.random() * 0.8 - 0.4,
+                a: Math.random() * 0.45 + 0.25,
+                rot: Math.random() * Math.PI * 2,
+                vr: Math.random() * 0.018 - 0.009
+            }));
+        }
+
+        function drawFlakes() {
+            snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+            for (const flake of flakes) {
+                flake.y += flake.vy;
+                flake.x += flake.vx + Math.sin(flake.y * 0.012) * 0.3;
+                flake.rot += flake.vr;
+                if (flake.y > snowCanvas.height + flake.size) { flake.y = -flake.size; flake.x = Math.random() * snowCanvas.width; }
+                if (flake.x > snowCanvas.width + flake.size) flake.x = -flake.size;
+                if (flake.x < -flake.size) flake.x = snowCanvas.width + flake.size;
+                if (rexSprite.complete && rexSprite.naturalWidth > 0) {
+                    snowCtx.save();
+                    snowCtx.globalAlpha = flake.a;
+                    snowCtx.translate(flake.x, flake.y);
+                    snowCtx.rotate(flake.rot);
+                    const aspect = rexSprite.naturalWidth / rexSprite.naturalHeight;
+                    snowCtx.drawImage(rexSprite, -(flake.size * aspect) / 2, -flake.size / 2, flake.size * aspect, flake.size);
+                    snowCtx.restore();
+                } else {
+                    snowCtx.fillStyle = 'rgba(255,255,255,0.4)';
+                    snowCtx.beginPath();
+                    snowCtx.arc(flake.x, flake.y, flake.size * 0.2, 0, Math.PI * 2);
+                    snowCtx.fill();
+                }
+            }
+            requestAnimationFrame(drawFlakes);
+        }
+
+        resizeSnowCanvas();
+        drawFlakes();
+        window.addEventListener('resize', resizeSnowCanvas);
+
+        const rotatingTexts = ['rex.wtf', 'rex', 'discord.gg/rexlua'];
+        let rotatingIndex = 0;
+        discordTxt.textContent = rotatingTexts[rotatingIndex];
+        const textInterval = setInterval(() => {
+            rotatingIndex = (rotatingIndex + 1) % rotatingTexts.length;
+            discordTxt.textContent = rotatingTexts[rotatingIndex];
+        }, 2000);
+
         let p = 0;
         const interval = setInterval(() => {
             p += Math.random() * 15 + 5;
             if (p >= 100) {
                 p = 100;
                 clearInterval(interval);
+                setTimeout(() => {
+                    loader.classList.add('fade-out');
+                    setTimeout(() => { loader.style.display = 'none'; clearInterval(textInterval); }, 2000);
+                }, 300);
             }
             bar.style.width = p + '%';
             followGif.style.left = p + '%';
