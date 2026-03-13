@@ -1,177 +1,184 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="tr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Loader - ReX 1.0</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { width: 100%; height: 100vh; overflow: hidden; }
-        #snowCanvas {
-            position: absolute; inset: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 1;
-        }
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.3);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; transition: opacity 2s ease; z-index: 9500; overflow: hidden;
-        }
-        #loader.fade-out { opacity: 0; pointer-events: none; }
-        #loaderContent {
-            position: relative; z-index: 2;
-            display: flex; flex-direction: column; align-items: center;
-        }
-        #animeGirl {
-            position: absolute; left: 50%; top: -120px;
-            width: 190px; height: auto; pointer-events: none;
-            animation: riseUp 1.2s ease-out both;
-        }
-        @keyframes riseUp {
-            0%   { transform: translate(-50%, 70px); opacity: 0; }
-            100% { transform: translate(-50%, 0);    opacity: 1; }
-        }
-        #title {
-            font-family: "Cinzel Decorative", cursive;
-            font-weight: 700; font-size: 20px; letter-spacing: 3px;
-            margin-bottom: 25px; color: #fff;
-        }
-        .text-outline {
-            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-        }
-        #barWrap {
-            width: 280px; height: 16px; background: rgba(30,30,30,0.9);
-            border-radius: 10px; border: 1px solid rgba(0,0,0,0.4); position: relative;
-        }
-        #bar {
-            height: 100%; width: 0%; background: #ff0000; border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255,0,0,0.6); transition: width 0.3s ease-out;
-        }
-        #followGif {
-            position: absolute; bottom: 16px; left: 0%;
-            width: 25px; height: 25px; filter: brightness(0) invert(1);
-            transform: translateX(-50%); transition: left 0.3s ease-out; pointer-events: none;
-        }
-        #percentTxt {
-            font-family: "Rajdhani", sans-serif; font-weight: 700;
-            margin-bottom: 8px; font-size: 13px; letter-spacing: 2px; color: #eee;
-        }
-        #loadTxt {
-            font-family: "Rajdhani", sans-serif; font-weight: 700;
-            margin-top: 10px; font-size: 13px; letter-spacing: 2px;
-            text-transform: uppercase; color: #eee;
-        }
-        #discordTxt {
-            font-family: "Rajdhani", sans-serif; font-weight: 700;
-            margin-top: 60px; font-size: 13px; letter-spacing: 2px; color: #eee;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rex Loader</title>
+  <style>
+    :root {
+      --lc1: #ff2a2a;
+      --lc2: #b30000;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    @keyframes gs-fade-in {
+      0% { opacity: 0; transform: scale(0.96); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes gs-fade-out {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.04); }
+    }
+
+    @keyframes gs-bar {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    @keyframes gs-pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    #gs-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0;
+      background: radial-gradient(ellipse at 50% 40%, #171717 0%, #050505 100%);
+      animation: gs-fade-in 0.4s ease both;
+    }
+
+    #gs-loader.gs-hiding {
+      animation: gs-fade-out 2s ease forwards;
+    }
+
+    #gs-loader-title {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: #fff;
+      text-transform: uppercase;
+      margin-top: 0;
+      text-shadow: 0 0 40px rgba(255, 42, 42, 0.8);
+    }
+
+    #gs-loader-title span {
+      background: linear-gradient(135deg, var(--lc1), var(--lc2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    #gs-loader-sub {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 2px;
+      margin-top: 6px;
+      animation: gs-pulse 2s ease-in-out infinite;
+    }
+
+    #gs-loader-percent {
+      margin-top: 10px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.75);
+      font-weight: 700;
+    }
+
+    #gs-loader-bar-wrap {
+      width: 200px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+      margin-top: 32px;
+      overflow: hidden;
+    }
+
+    #gs-loader-bar {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--lc1), var(--lc2));
+      border-radius: 2px;
+      box-shadow: 0 0 10px rgba(255, 42, 42, 0.8);
+      transition: width 0.3s ease-out;
+    }
+
+    #gs-loader-dots {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    #gs-loader-dots span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--lc1);
+      animation: gs-pulse 1.2s ease-in-out infinite;
+    }
+
+    #gs-loader-dots span:nth-child(2) {
+      animation-delay: .2s;
+      background: rgba(255, 42, 42, 0.7);
+    }
+
+    #gs-loader-dots span:nth-child(3) {
+      animation-delay: .4s;
+      background: rgba(255, 42, 42, 0.4);
+    }
+  </style>
 </head>
 <body>
-    <div id="loader">
-        <canvas id="snowCanvas"></canvas>
-        <div id="loaderContent">
-            <img id="animeGirl" src="https://files.catbox.moe/398tuq.png" alt="anime girl">
-            <div id="title" class="text-outline">Rex.wtf v1.0</div>
-            <div id="percentTxt" class="text-outline">0%</div>
-            <div id="barWrap">
-                <img id="followGif" src="https://files.catbox.moe/y50jx0.png" alt="loading">
-                <div id="bar"></div>
-            </div>
-            <div id="loadTxt" class="text-outline">Loading...</div>
-            <div id="discordTxt" class="text-outline">discord.gg/rexlua</div>
-        </div>
-    </div>
-    <script>
-        const bar = document.getElementById('bar');
-        const loadTxt = document.getElementById('loadTxt');
-        const percentTxt = document.getElementById('percentTxt');
-        const discordTxt = document.getElementById('discordTxt');
-        const loader = document.getElementById('loader');
-        const followGif = document.getElementById('followGif');
-        const snowCanvas = document.getElementById('snowCanvas');
-        const snowCtx = snowCanvas.getContext('2d');
+  <div id="gs-loader" aria-label="Loading">
+    <div id="gs-loader-title">Rex<span>.lua</span></div>
+    <div id="gs-loader-sub">Loading</div>
+    <div id="gs-loader-percent">0%</div>
+    <div id="gs-loader-bar-wrap"><div id="gs-loader-bar"></div></div>
+    <div id="gs-loader-dots"><span></span><span></span><span></span></div>
+  </div>
 
-        const rexSprite = new Image();
-        rexSprite.src = 'https://i.ibb.co/v6zx1kyM/rex.png';
+  <script>
+    (function () {
+      var loader = document.getElementById("gs-loader");
+      var bar = document.getElementById("gs-loader-bar");
+      var sub = document.getElementById("gs-loader-sub");
+      var percent = document.getElementById("gs-loader-percent");
+      if (!loader || !bar || !sub || !percent) return;
 
-        let flakes = [];
-
-        function resizeSnowCanvas() {
-            snowCanvas.width = window.innerWidth;
-            snowCanvas.height = window.innerHeight;
-            const flakeCount = Math.max(40, Math.floor((window.innerWidth * window.innerHeight) / 18000));
-            flakes = Array.from({ length: flakeCount }, () => ({
-                x: Math.random() * snowCanvas.width,
-                y: Math.random() * snowCanvas.height,
-                size: Math.random() * 28 + 18,
-                vy: Math.random() * 1.4 + 0.6,
-                vx: Math.random() * 0.8 - 0.4,
-                a: Math.random() * 0.45 + 0.25,
-                rot: Math.random() * Math.PI * 2,
-                vr: Math.random() * 0.018 - 0.009
-            }));
+      var p = 0;
+      var interval = setInterval(function () {
+        p += Math.random() * 15 + 5;
+        if (p >= 100) {
+          p = 100;
         }
 
-        function drawFlakes() {
-            snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
-            for (const flake of flakes) {
-                flake.y += flake.vy;
-                flake.x += flake.vx + Math.sin(flake.y * 0.012) * 0.3;
-                flake.rot += flake.vr;
-                if (flake.y > snowCanvas.height + flake.size) { flake.y = -flake.size; flake.x = Math.random() * snowCanvas.width; }
-                if (flake.x > snowCanvas.width + flake.size) flake.x = -flake.size;
-                if (flake.x < -flake.size) flake.x = snowCanvas.width + flake.size;
-                if (rexSprite.complete && rexSprite.naturalWidth > 0) {
-                    snowCtx.save();
-                    snowCtx.globalAlpha = flake.a;
-                    snowCtx.translate(flake.x, flake.y);
-                    snowCtx.rotate(flake.rot);
-                    const aspect = rexSprite.naturalWidth / rexSprite.naturalHeight;
-                    snowCtx.drawImage(rexSprite, -(flake.size * aspect) / 2, -flake.size / 2, flake.size * aspect, flake.size);
-                    snowCtx.restore();
-                } else {
-                    snowCtx.fillStyle = 'rgba(255,255,255,0.4)';
-                    snowCtx.beginPath();
-                    snowCtx.arc(flake.x, flake.y, flake.size * 0.2, 0, Math.PI * 2);
-                    snowCtx.fill();
-                }
-            }
-            requestAnimationFrame(drawFlakes);
+        bar.style.width = p + "%";
+        percent.textContent = Math.round(p) + "%";
+        if (p < 100) {
+          sub.textContent = "Loading";
+          return;
         }
 
-        resizeSnowCanvas();
-        drawFlakes();
-        window.addEventListener('resize', resizeSnowCanvas);
+        sub.textContent = "Successfully Injected";
+        clearInterval(interval);
 
-        const rotatingTexts = ['rex.wtf', 'rex', 'discord.gg/rexlua'];
-        let rotatingIndex = 0;
-        discordTxt.textContent = rotatingTexts[rotatingIndex];
-        const textInterval = setInterval(() => {
-            rotatingIndex = (rotatingIndex + 1) % rotatingTexts.length;
-            discordTxt.textContent = rotatingTexts[rotatingIndex];
-        }, 2000);
-
-        let p = 0;
-        const interval = setInterval(() => {
-            p += Math.random() * 15 + 5;
-            if (p >= 100) {
-                p = 100;
-                loadTxt.textContent = 'Successfully Injected';
-                clearInterval(interval);
-                setTimeout(() => {
-                    loader.classList.add('fade-out');
-                    setTimeout(() => { loader.style.display = 'none'; clearInterval(textInterval); }, 2000);
-                }, 900);
-            }
-            bar.style.width = p + '%';
-            followGif.style.left = p + '%';
-            percentTxt.textContent = Math.round(p) + '%';
-            if (p < 100) loadTxt.textContent = 'Loading...';
-        }, 200);
-    </script>
+        setTimeout(function () {
+          loader.classList.add("gs-hiding");
+          setTimeout(function () {
+            loader.remove();
+          }, 2000);
+        }, 900);
+      }, 200);
+    })();
+  </script>
 </body>
 </html>
